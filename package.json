@@ -1,40 +1,82 @@
 {
-	"name": "pomdor",
-	"productName": "pomdor",
-	"version": "1.1.0",
-	"description": "team shared timer",
-	"main": "src/main.js",
-	"scripts": {
-		"start": "electron .",
-		"pack": "electron-builder --dir",
-		"dist": "electron-builder"
-	},
-	"keywords": [],
-	"author": "evoluzione",
-	"license": "MIT",
-	"build": {
-		"appId": "com.evoluzione.pomodor",
-		"mac": {
-			"category": "com.evoluzione.pomodoro.productivity"
-		},
-		"publish": [
-			{
-				"provider": "generic",
-				"url": "http://demo7.evoluzionetelematica.it/pomdor/"
-			}
-		]
-	},
-	"dependencies": {
-		"@fortawesome/fontawesome-free": "^5.9.0",
-		"electron-json-storage": "^4.1.6",
-		"electron-squirrel-startup": "^1.0.0",
-		"electron-updater": "^4.1.2",
-		"moment": "^2.24.0",
-		"normalize.css": "^8.0.1",
-		"superagent": "^5.1.0"
-	},
-	"devDependencies": {
-		"electron": "^6.0.0",
-		"electron-builder": "^21.2.0"
-	}
+  "name": "pomdor",
+  "productName": "pomdor",
+  "version": "10.0.0",
+  "description": "yet another tomato app",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsc && electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts .",
+    "check": "npm run check-ts && npm run check-lint && npm run check-format && npm run check-spell",
+    "check-ts": "tsc --noEmit",
+    "check-lint": "tsc --noEmit && eslint 'src/**/*.ts'",
+    "check-format": "prettier -c 'src/**/*.ts'",
+    "check-spell": "cspell 'src/**/*ts'",
+    "format": "prettier --fix -w 'src/**/*.ts'"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Alberto Barrila'",
+    "email": "alberto.barrila@gmail.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "icon.icns"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "pomdor"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.65",
+    "@electron-forge/maker-deb": "^6.0.0-beta.65",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.65",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.65",
+    "@electron-forge/maker-zip": "^6.0.0-beta.65",
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
+    "electron": "20.0.3",
+    "eslint": "^8.22.0",
+    "eslint-plugin-import": "^2.26.0",
+    "typescript": "~4.5.4",
+    "@tsconfig/node16": "^1.0.2",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-deprecation": "^1.2.1",
+    "eslint-plugin-no-only-tests": "^2.6.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1",
+    "cspell": "^6.0.0"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "@fortawesome/fontawesome-free": "^6.1.2",
+    "moment": "^2.29.4",
+    "normalize.css": "^8.0.1",
+    "winston": "^3.3.3"
+  }
 }
