@@ -1,6 +1,7 @@
 :root {
     --color-primary: #fe5444;
     --color-secondary: #fb7274;
+    --color-tertiary: #49a066;
 }
 
 body,
@@ -147,7 +148,7 @@ figure {
     font-size: 12px;
     border: 1px solid white;
     background-color: white;
-    padding: 5px 10px;
+    padding: 10px 15px;
     border-style: solid;
     color: black;
     display: inline-block;
@@ -164,41 +165,47 @@ figure {
 .button:hover {
     background-color: var(--color-secondary);
     color: black;
-    border-color: var(--color-secondary);
+    /* border-color: var(--color-secondary); */
+}
+
+.button-pause:hover {
+    background-color: var(--color-tertiary);
+    color: black;
+    /* border-color: var(--color-tertiary); */
 }
 
 .button--primary-work {
     position: absolute;
     bottom: 24px;
-    left: 25%;
+    left: 35px;
     transform: translate(-25%, 0);
 }
 
 .button--primary-pause {
     position: absolute;
     bottom: 24px;
-    left: 40%;
+    left: 90px;
     transform: translate(-40%, 0);
 }
 
 .button--primary-long {
     position: absolute;
     bottom: 24px;
-    left: 55%;
+    left: 153px;
     transform: translate(-55%, 0);
 }
 
 .button--primary-squash {
     position: absolute;
     bottom: 24px;
-    left: 70%;
+    left: 215px;
     transform: translate(-70%, 0);
 }
 
 .button--primary-quit {
     position: absolute;
     bottom: 24px;
-    left: 90%;
+    left: 295px;
     transform: translate(-90%, 0);
 }
 
