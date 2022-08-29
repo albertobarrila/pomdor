@@ -27,11 +27,20 @@
       dominant-baseline="central"></text>
   </svg>
 
+  <em id="icon" class="icon icon--settings fas fa-sliders-h js-settings"></em>
+
   <a id="js-work" class="button button--primary-work button--timer" href="#">🍅</a>
   <a id="js-pause" class="button button-pause button--primary-pause button--timer" href="#">🍌</a>
   <a id="js-long-pause" class="button button-pause button--primary-long button--timer" href="#">🍌🍌</a>
   <a id="js-squash" class="button button--primary-squash button--timer" href="#">🕹️</a>
   <a id="js-quit" class="button button--primary-quit button--timer" href="#">quit</a>
+
+  <div class="panel" id="js-panel">
+    <strong class="panel__title">Statistics</strong>
+    <div id='js-logs' class="panel__option">
+    
+    </div>
+  </div>
 
   <script src="../dist/renderer.js"></script>
 </body>

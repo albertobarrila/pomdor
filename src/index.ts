@@ -3,6 +3,30 @@ import * as path from "path"
 import moment from "moment"
 import { Timer, work, pause, longPause, squash, toTimerView } from "./pomodoro"
 import { createLogger, format, transports } from "winston"
+import * as fs from "fs/promises"
+
+export type Log = {
+  timestamp: moment.Moment
+  level: string
+  message: string
+}
+
+export type ViewLogItem = {
+  time: string
+  level: string
+  message: string
+}
+
+export type ViewLog = {
+  date: string
+  logs: ViewLogItem[]
+}
+
+export type LogResult = {
+  success: boolean
+  data?: ViewLog[]
+  error?: string
+}
 
 let tray: Tray | undefined = undefined
 let timer: Timer = squash()
@@ -20,12 +44,16 @@ const logger = createLogger({
   silent: false,
   level: "info",
   format: format.combine(
-    format.timestamp(),
+    format.timestamp({ format: "YYYY-MM-DD hh:mm" }),
     format.printf((info) => {
-      return `${info.timestamp} ${info.level}: ${info.message}`
+      return JSON.stringify({
+        timestamp: info.timestamp,
+        level: info.level,
+        message: info.message,
+      })
     })
   ),
-  transports: [new transports.File({ filename: "pomdor.log" })],
+  transports: [new transports.File({ filename: "/Users/alberto/Documents/pomdor.log" })],
 })
 
 const createTray = () => {
@@ -232,4 +260,38 @@ ipcMain.on("squash", () => {
 ipcMain.on("quit", () => {
   clearInterval(updater)
   app.quit()
+})
+
+ipcMain.on("loadLogs", async () => {
+  const ret: LogResult = {
+    success: false,
+  }
+  try {
+    const data = await fs.readFile("/Users/alberto/Documents/pomdor.log", "utf8")
+    const logs: Log[] = data
+      .split("\n")
+      .filter((x) => x !== "")
+      .map((x) => JSON.parse(x) as Log)
+
+    const items: ViewLog[] = []
+
+    for (const log of logs) {
+      const index = items.findIndex((x) => moment(x.date, "DD/MM/YYYY").date() === moment(log.timestamp).date())
+      const item = {
+        time: moment(log.timestamp).format("HH:mm"),
+        level: log.level,
+        message: log.message,
+      }
+      if (index >= 0) items[index].logs.push(item)
+      else items.push({ date: moment(log.timestamp).format("DD/MM/YYYY"), logs: [item] })
+    }
+    ret.success = true
+    ret.data = items
+  } catch (err) {
+    console.log(err)
+    ret.success = false
+    ret.error = (err as Error).message
+  }
+
+  if (window) window.webContents.send("showLogs", ret)
 })

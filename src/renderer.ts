@@ -59,6 +59,16 @@ const drawProgress = () => {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  const settings = document.querySelectorAll(".js-settings")
+  settings.forEach((el) => {
+    el.addEventListener("click", () => {
+      const a = document.getElementById("js-panel")
+      if (a) a.classList.toggle("is-active")
+      el.classList.toggle("fa-times-circle")
+      el.classList.toggle("fa-sliders-h")
+      window.api.loadLogs()
+    })
+  })
   drawProgress()
 })
 
@@ -84,4 +94,17 @@ window.api.handleUpdate((_event, timer) => {
 window.api.handlePlay(async (_event, audio: string) => {
   const player = new Audio(audio)
   await player.play()
+})
+
+window.api.handleLogs((_event, logs) => {
+  const container = document.getElementById("js-logs")
+  if (container) {
+    container.innerHTML = ""
+    if (logs.success)
+      for (const log of logs.data!) {
+        container.innerHTML += `<strong>${log.date}</strong><br/>`
+        for (const e of log.logs) container.innerHTML += `<em>${e.time}</em> ${e.message}<br/>`
+      }
+    else container.innerHTML += `<strong>${logs.error!}</strong><br/>`
+  }
 })
